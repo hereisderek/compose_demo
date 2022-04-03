@@ -4,10 +4,16 @@ pluginManagement {
         google()
         mavenCentral()
     }
+
+    plugins {
+        id("de.fayard.refreshVersions").version("0.40.1")
+    }
 }
 
-plugins{
-    id("de.fayard.refreshVersions") version "0.40.1"
+
+plugins {
+    id("com.gradle.enterprise").version("3.8")
+    id("de.fayard.refreshVersions").version("0.40.1")
 }
 
 dependencyResolutionManagement {
@@ -19,4 +25,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Timely"
-include ':app'
+include(":app")
