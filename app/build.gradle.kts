@@ -74,9 +74,15 @@ android {
     }
 }
 
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
+}
+
 dependencies {
     implementation(AndroidX.core.ktx)
     implementation(AndroidX.lifecycle.runtimeKtx)
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-alpha05")
 
     /* coroutines */
     implementation(KotlinX.coroutines.android)
@@ -86,6 +92,7 @@ dependencies {
     implementation ("androidx.hilt:hilt-lifecycle-viewmodel:_")
     kapt (AndroidX.hilt.compiler)
     implementation(AndroidX.hilt.navigationCompose)
+
 
     /* Compose */
     implementation(AndroidX.activity.compose)

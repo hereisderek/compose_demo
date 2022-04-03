@@ -1,19 +1,14 @@
 package top.derek.timely
 
 import android.app.Application
-import android.content.Context
+import dagger.hilt.android.HiltAndroidApp
 import logcat.AndroidLogcatLogger
 import logcat.LogPriority.VERBOSE
 import logcat.logcat
 
+
+@HiltAndroidApp
 class App : Application() {
-
-
-
-    override fun attachBaseContext(base: Context?) {
-        super.attachBaseContext(base)
-    }
-
 
     override fun onCreate() {
         super.onCreate()
