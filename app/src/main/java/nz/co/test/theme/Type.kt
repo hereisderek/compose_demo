@@ -1,4 +1,4 @@
-package top.derek.timely.ui.theme
+package nz.co.test.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

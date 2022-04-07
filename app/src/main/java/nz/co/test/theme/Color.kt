@@ -1,4 +1,4 @@
-package top.derek.timely.ui.theme
+package nz.co.test.theme
 
 import androidx.compose.ui.graphics.Color
 

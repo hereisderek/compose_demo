@@ -1,4 +1,4 @@
-package top.derek.timely
+package nz.co.test
 
 import org.junit.Test
 

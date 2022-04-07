@@ -1,4 +1,4 @@
-package top.derek.timely
+package nz.co.test
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

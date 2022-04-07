@@ -3,6 +3,7 @@ plugins {
     id ("com.android.application")
     kotlin("android")
     kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -10,7 +11,7 @@ android {
     compileSdk = 32
 
     defaultConfig {
-        applicationId = "top.derek.timely"
+        applicationId = "nz.co.test"
 
         minSdk = 21
         targetSdk = 32
@@ -81,18 +82,39 @@ kapt {
 
 dependencies {
     implementation(AndroidX.core.ktx)
-    implementation(AndroidX.lifecycle.runtimeKtx)
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-alpha05")
+    implementation(AndroidX.recyclerView)
 
-    /* coroutines */
+    /* appCompat */
+    implementation(AndroidX.appCompat)
+    implementation(AndroidX.appCompat.resources)
+
+    /* Coroutines */
     implementation(KotlinX.coroutines.android)
 
     /* Hilt */
-    implementation (AndroidX.hilt.compiler)
-    implementation ("androidx.hilt:hilt-lifecycle-viewmodel:_")
+    implementation (Google.dagger.hilt.android)
+    kapt (Google.dagger.hilt.android.compiler)
+    kapt (Google.dagger.hilt.compiler)
+
+    implementation(Google.dagger.hilt.android)
+    // implementation ("androidx.hilt:hilt-lifecycle-viewmodel:_")
     kapt (AndroidX.hilt.compiler)
+    // implementation (AndroidX.hilt.compiler)
+
     implementation(AndroidX.hilt.navigationCompose)
 
+
+    /* lifecycle */
+    implementation(AndroidX.lifecycle.runtimeKtx)
+    implementation(AndroidX.lifecycle.viewModelKtx)
+    implementation(AndroidX.lifecycle.viewModelCompose)
+    implementation(AndroidX.lifecycle.liveDataKtx)
+    implementation(AndroidX.lifecycle.viewModelSavedState)
+    implementation(AndroidX.lifecycle.commonJava8)
+    implementation(AndroidX.lifecycle.process)
+    implementation(AndroidX.lifecycle.reactiveStreamsKtx)
+
+    testImplementation(AndroidX.archCore.testing)
 
     /* Compose */
     implementation(AndroidX.activity.compose)
@@ -114,6 +136,9 @@ dependencies {
 
     /*  Networking */
     implementation(Square.okio)
+    implementation(Square.retrofit2)
+    implementation(Square.okHttp3)
+    implementation(Square.retrofit2.converter.gson)
 
     implementation(Ktor.client.core)
     implementation(Ktor.client.cio)
