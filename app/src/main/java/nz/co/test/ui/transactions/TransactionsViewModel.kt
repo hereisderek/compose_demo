@@ -1,4 +1,4 @@
-package nz.co.test.ui.browse
+package nz.co.test.ui.transactions
 
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class BrowseViewModel @Inject constructor(
+class TransactionsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val transactionsRepository: TransactionsRepository
 ) : ViewModel() {
@@ -22,6 +22,10 @@ class BrowseViewModel @Inject constructor(
     }.distinctUntilChanged()
 
     val transactions : LiveData<Response<List<Transaction>>> = _transactions
+
+    init {
+        refresh()
+    }
 
     fun refresh() {
         viewModelScope.launch {

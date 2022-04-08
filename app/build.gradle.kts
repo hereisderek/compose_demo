@@ -100,7 +100,6 @@ dependencies {
     // implementation ("androidx.hilt:hilt-lifecycle-viewmodel:_")
     kapt (AndroidX.hilt.compiler)
     // implementation (AndroidX.hilt.compiler)
-
     implementation(AndroidX.hilt.navigationCompose)
 
 
