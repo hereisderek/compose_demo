@@ -7,8 +7,8 @@
  * navigation
  * material3
  * coroutines
- * (ktor)[https://ktor.io/]
+ * [ktor](https://ktor.io/)
  * Okio
  * misc
-   * (square/logcat)[https://github.com/square/logcat]
-   * 
+   * [square/logcat](https://github.com/square/logcat)
+   
