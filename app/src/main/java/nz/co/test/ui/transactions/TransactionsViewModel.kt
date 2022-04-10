@@ -7,6 +7,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import logcat.logcat
 import nz.co.test.transactions.data.models.Response
+import nz.co.test.transactions.data.models.Result
 import nz.co.test.transactions.data.models.Transaction
 import nz.co.test.transactions.data.repository.TransactionsRepository
 import nz.co.test.util.AppDispatchers
@@ -24,7 +25,9 @@ class TransactionsViewModel @Inject constructor(
     private val _state = MutableStateFlow<TransactionState>(TransactionState.Loading)
     private val loading = MutableStateFlow(false)
     private val focusedTransaction = MutableStateFlow<Transaction?>(null)
-    private val transactions : Flow<List<Transaction>> = transactionsRepository.transactions.map {
+    private val transactions : MutableStateFlow<List<Transaction>> = MutableStateFlow(emptyList())
+
+    /*private val transactions : Flow<List<Transaction>> = transactionsRepository.getTransactions(false).map {
         logcat {
             "transactions Running on thread:$threadName"
         }
@@ -33,12 +36,13 @@ class TransactionsViewModel @Inject constructor(
             is Response.Loading -> emptyList()
             is Response.Error -> throw it.exception
         }
-    }.distinctUntilChanged().asFlow()
+    }.distinctUntilChanged().asFlow()*/
 
     val state: StateFlow<TransactionState> get() = _state
 
 
     init {
+
         viewModelScope.launch(dispatchers.Default) {
             combine(loading, transactions, focusedTransaction) { loading, transactions, focus ->
                 logcat {
@@ -57,11 +61,15 @@ class TransactionsViewModel @Inject constructor(
         refresh()
     }
 
-    fun refresh() {
-        viewModelScope.launch {
+    fun refresh(force: Boolean = false) {
+        viewModelScope.launch(dispatchers.Default) {
             runCatching {
                 loading.value = true
-                transactionsRepository.refresh()
+                val data = when(val result = transactionsRepository.getTransactions(force)) {
+                    is Result.Success -> result.data
+                    is Result.Error -> throw result.exception
+                }
+                transactions.emit(data)
             }
             loading.value = false
         }

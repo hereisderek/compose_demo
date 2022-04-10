@@ -1,19 +1,17 @@
 package nz.co.test.transactions.data.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
-import nz.co.test.transactions.data.models.Response
+import logcat.logcat
+import nz.co.test.transactions.data.models.Result
 import nz.co.test.transactions.data.models.Transaction
 import nz.co.test.transactions.data.services.TransactionsService
 import nz.co.test.util.AppDispatchers
 import javax.inject.Inject
 
 
-
 interface TransactionsRepository {
-    val transactions : LiveData<Response<List<Transaction>>>
-    suspend fun refresh()
+    suspend fun getTransactions(force: Boolean = false) : Result<List<Transaction>>
 }
 
 class TransactionsRepositoryImpl @Inject constructor(
@@ -21,19 +19,23 @@ class TransactionsRepositoryImpl @Inject constructor(
     private val dispatchers: AppDispatchers
 ) : TransactionsRepository {
 
-    private val _transactions = MutableLiveData<Response<List<Transaction>>>()
+    private val localTransactionsCache = MutableStateFlow<List<Transaction>>(emptyList())
 
-    override val transactions: LiveData<Response<List<Transaction>>> get() = _transactions
-
-    override suspend fun refresh() {
-        _transactions.apply {
-            value = Response.loading
-            value = withContext(dispatchers.IO) {
-                try {
-                    Response.success(transactionsService.retrieveTransactions())
-                } catch (e: Exception) {
-                    Response.error(e)
+    override suspend fun getTransactions(force: Boolean): Result<List<Transaction>> {
+        val cache = localTransactionsCache.value
+        return if (!force && cache.isNotEmpty()) {
+            Result.of(cache)
+        } else withContext(dispatchers.IO){
+            try {
+                transactionsService.retrieveTransactions().let {
+                    logcat {
+                        "received transactions from api, size:${it.size}"
+                    }
+                    localTransactionsCache.emit(it)
+                    Result.of(it)
                 }
+            } catch (e: Exception) {
+                Result.error(e)
             }
         }
     }
