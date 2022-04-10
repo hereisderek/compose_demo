@@ -11,4 +11,3 @@
  * Okio
  * misc
    * [square/logcat](https://github.com/square/logcat)
-   

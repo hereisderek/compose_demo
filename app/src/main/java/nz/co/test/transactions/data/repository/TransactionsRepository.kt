@@ -2,8 +2,6 @@ package nz.co.test.transactions.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nz.co.test.transactions.data.models.Response
 import nz.co.test.transactions.data.models.Transaction
@@ -30,21 +28,13 @@ class TransactionsRepositoryImpl @Inject constructor(
     override suspend fun refresh() {
         _transactions.apply {
             value = Response.loading
-            value = withContext(dispatchers.ioDispatcher) {
+            value = withContext(dispatchers.IO) {
                 try {
                     Response.success(transactionsService.retrieveTransactions())
                 } catch (e: Exception) {
                     Response.error(e)
                 }
             }
-
         }
     }
 }
-
-/*
-class TransactionsRepository @Inject constructor(private val transactionsService: TransactionsService) {
-    suspend fun retrieveTransactions() = transactionsService.retrieveTransactions().let { list ->
-        list.sortedByDescending { it.transactionDate }
-    }
-}*/
