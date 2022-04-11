@@ -142,11 +142,20 @@ dependencies {
     implementation(Ktor.client.core)
     implementation(Ktor.client.cio)
 
+    /* Local testing */
     testImplementation(Testing.junit4)
+    testImplementation("org.hamcrest:hamcrest-all:_")
+    testImplementation(AndroidX.archCore.testing)
+    testImplementation(KotlinX.coroutines.android)
+    testImplementation(KotlinX.coroutines.test)
+    testImplementation(Testing.robolectric)
+    testImplementation(AndroidX.navigation.testing)
+    testImplementation(AndroidX.test.espresso.core)
+    testImplementation(AndroidX.test.espresso.contrib)
+    testImplementation(AndroidX.test.espresso.intents)
+    testImplementation("com.google.truth:truth:_")
+
     androidTestImplementation(AndroidX.test.ext.junit)
     androidTestImplementation(AndroidX.test.espresso.core)
     androidTestImplementation(AndroidX.compose.ui.testJunit4)
-
-
-
 }

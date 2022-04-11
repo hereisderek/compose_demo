@@ -27,27 +27,13 @@ class TransactionsViewModel @Inject constructor(
     private val focusedTransaction = MutableStateFlow<Transaction?>(null)
     private val transactions : MutableStateFlow<List<Transaction>> = MutableStateFlow(emptyList())
 
-    /*private val transactions : Flow<List<Transaction>> = transactionsRepository.getTransactions(false).map {
-        logcat {
-            "transactions Running on thread:$threadName"
-        }
-        when(it) {
-            is Response.Success -> it.data.sortedByDescending { it.transactionDate }
-            is Response.Loading -> emptyList()
-            is Response.Error -> throw it.exception
-        }
-    }.distinctUntilChanged().asFlow()*/
-
     val state: StateFlow<TransactionState> get() = _state
 
 
     init {
-
         viewModelScope.launch(dispatchers.Default) {
             combine(loading, transactions, focusedTransaction) { loading, transactions, focus ->
-                logcat {
-                    "combine Running on thread:$threadName"
-                }
+                logcat { "combine Running on thread:$threadName" }
                 if (loading) TransactionState.Loading else {
                     TransactionState.Transactions(transactions, focus)
                 }
@@ -76,9 +62,7 @@ class TransactionsViewModel @Inject constructor(
     }
 
     fun onTransactionSelected(transaction: Transaction) {
-        logcat {
-            "onTransactionSelected: $transaction"
-        }
+        logcat { "onTransactionSelected: $transaction" }
         viewModelScope.launch {
             focusedTransaction.value = transaction
         }
